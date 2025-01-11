@@ -1,37 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <openssl/bn.h>
 
 void printBN(char *msg, BIGNUM * a);
+void string_to_hex(const char *input, char *output);
 
 int main(void)
 {
   // Define required variables.
   
-  BIGNUM *m = BN_new(); // Define message.
-
-  BIGNUM *e = BN_new(); // Define public key
-  
-  BIGNUM *n = BN_new(); // Define the group.
-
-  BIGNUM *d = BN_new(); // Define the private key.
-
+  BIGNUM *m = BN_new(); // Message.
+  BIGNUM *e = BN_new(); // Public key
+  BIGNUM *n = BN_new(); // Group.
+  BIGNUM *d = BN_new(); // Private key.
   BIGNUM *encrypted_msg = BN_new(); // Define the encrypted message.
-  BIGNUM *decrypted_msg = BN_new(); // Define the decrypted message.
   
   BN_CTX *ctx = BN_CTX_new(); // Define ctx for calculations.
 
+  // Ensure all variables allocated.
+  if (!m || !e || !n || !d || !encrypted_msg || !ctx) {
+      fprintf(stderr, "Error: Failed to allocate BIGNUMs or BN_CTX\n");
+      return 1;
+  }
+
+  // Input the message from the user.
+  char input[256];
+  printf("Enter the message: ");
+  fgets(input, sizeof(input), stdin);
+  input[strcspn(input, "\n")] = '\0';  // Remove newline character if present
+
+  // Convert the message to a hex string.
+  char hex_message[512] = {0};
+  string_to_hex(input, hex_message);
+
   // Assign values.
-  BN_hex2bn(&m,"4120746f702073656372656421"); 
-  BN_hex2bn(&n,"DCBFFE3E51F62E09CE7032E2677A78946A849DC4CDDE3A4D0CB81629242FB1A5"); 
+  BN_hex2bn(&m, hex_message); 
+  BN_hex2bn(&n, "DCBFFE3E51F62E09CE7032E2677A78946A849DC4CDDE3A4D0CB81629242FB1A5"); 
   BN_hex2bn(&e, "010001"); 
-  BN_hex2bn(&d,"74D806F9F3A62BAE331FFE3F0A68AFE35B3D2E4794148AACBC26AA381CD7D30D"); 
+  BN_hex2bn(&d, "74D806F9F3A62BAE331FFE3F0A68AFE35B3D2E4794148AACBC26AA381CD7D30D"); 
 
   BN_mod_exp(encrypted_msg, m, e, n, ctx); 
-  BN_mod_exp(decrypted_msg, encrypted_msg, d, n, ctx); 
 
   printBN("Encrypted message:", encrypted_msg);
-  printBN("Decrypted message:", decrypted_msg);
 
   // Clean up.
   BN_CTX_free(ctx);
@@ -40,7 +51,6 @@ int main(void)
   BN_free(e);
   BN_free(d);
   BN_free(encrypted_msg);
-  BN_free(decrypted_msg);
 
   return 0;
 }
@@ -52,4 +62,13 @@ void printBN(char *msg, BIGNUM * a)
   char * number_str = BN_bn2hex(a);
   printf("%s %s\n", msg, number_str);
   OPENSSL_free(number_str);
+}
+
+void string_to_hex(const char *input, char *output)
+{
+    while (*input) {
+        sprintf(output, "%02X", (unsigned char)*input);
+        input++;
+        output += 2;
+    }
 }
