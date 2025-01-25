@@ -12,46 +12,61 @@ int main(void)
   BIGNUM *c = BN_new(); // Cipher.
   BIGNUM *n = BN_new(); // Group.
   BIGNUM *d = BN_new(); // Private key.
-  BIGNUM *decrypted_msg = BN_new(); // Define the decrypted message.
+  BIGNUM *sign_msg = BN_new(); // Define the decrypted message.
   
   BN_CTX *ctx = BN_CTX_new(); // Define ctx for calculations.
 
   // Ensure all variables allocated.
-  if (!c || !n || !d || !decrypted_msg || !ctx) {
+  if (!c || !n || !d || !sign_msg || !ctx) {
       fprintf(stderr, "Error: Failed to allocate BIGNUMs or BN_CTX\n");
       return 1;
   }
 
   // Input the message from the user.
-  char hex_cipher[256];
-  printf("Enter the cipher text: ");
-  fgets(hex_cipher, sizeof(hex_cipher), stdin);
-  hex_cipher[strcspn(hex_cipher, "\n")] = '\0';
+  char message[256];
+  char sign[256];
+
+  printf("Enter the message: ");
+  fgets(message, sizeof(message), stdin);
+  message[strcspn(message, "\n")] = '\0';
+
+  printf("Enter the signature: ");
+  fgets(sign, sizeof(sign), stdin);
+  sign[strcspn(sign, "\n")] = '\0';
 
   // Assign values.
-  BN_hex2bn(&c, hex_cipher); 
+  BN_hex2bn(&c, sign); 
   BN_hex2bn(&n, "DCBFFE3E51F62E09CE7032E2677A78946A849DC4CDDE3A4D0CB81629242FB1A5"); 
   BN_hex2bn(&d, "74D806F9F3A62BAE331FFE3F0A68AFE35B3D2E4794148AACBC26AA381CD7D30D"); 
 
-  BN_mod_exp(decrypted_msg, c, d, n, ctx); 
+  BN_mod_exp(sign_msg, c, d, n, ctx); 
 
-  char decrypted_msg_text[256] = {0};
-  char decrypted_msg_hex[256] = {0};
-  char *decrypted_hex_ptr = BN_bn2hex(decrypted_msg);
+  char sign_msg_text[256] = {0};
+  char sign_msg_hex[256] = {0};
+  char *sign_hex_ptr = BN_bn2hex(sign_msg);
 
-  strcpy(decrypted_msg_hex, decrypted_hex_ptr);
-  OPENSSL_free(decrypted_hex_ptr);
-  hex_to_string(decrypted_msg_hex, decrypted_msg_text);
+  strcpy(sign_msg_hex, sign_hex_ptr);
+  OPENSSL_free(sign_hex_ptr);
+  hex_to_string(sign_msg_hex, sign_msg_text);
 
-  printf("Decrypted message (hex): %s\n", decrypted_msg_hex);
-  printf("Decrypted message (text): %s\n", decrypted_msg_text);
+  printf("Signature message (hex): %s\n", sign_msg_hex);
+  printf("Signature message (text): %s\n", sign_msg_text);
+
+  if (strcmp(sign_msg_text, message) == 0)
+  {
+    printf("Valid signature!\n");
+  }
+  else
+  {
+    printf("Invaliad signature!\n");
+  }
 
   // Clean up.
   BN_CTX_free(ctx);
   BN_free(n);
   BN_free(c);
   BN_free(d);
-  BN_free(decrypted_msg);
+  BN_free(sign_msg);
 
   return 0;
 }

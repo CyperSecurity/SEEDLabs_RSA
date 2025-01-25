@@ -13,12 +13,12 @@ int main(void)
   BIGNUM *m = BN_new(); // Message.
   BIGNUM *e = BN_new(); // Public key
   BIGNUM *n = BN_new(); // Group.
-  BIGNUM *encrypted_msg = BN_new(); // Define the encrypted message.
+  BIGNUM *signing_msg = BN_new(); // Define the encrypted message.
   
   BN_CTX *ctx = BN_CTX_new(); // Define ctx for calculations.
 
   // Ensure all variables allocated.
-  if (!m || !e || !n || !encrypted_msg || !ctx) {
+  if (!m || !e || !n || !signing_msg || !ctx) {
       fprintf(stderr, "Error: Failed to allocate BIGNUMs or BN_CTX\n");
       return 1;
   }
@@ -38,16 +38,16 @@ int main(void)
   BN_hex2bn(&n, "DCBFFE3E51F62E09CE7032E2677A78946A849DC4CDDE3A4D0CB81629242FB1A5"); 
   BN_hex2bn(&e, "010001"); 
 
-  BN_mod_exp(encrypted_msg, m, e, n, ctx); 
+  BN_mod_exp(signing_msg, m, e, n, ctx); 
 
-  printBN("Encrypted message:", encrypted_msg);
+  printBN("Signature: ", signing_msg);
 
   // Clean up.
   BN_CTX_free(ctx);
   BN_free(n);
   BN_free(m);
   BN_free(e);
-  BN_free(encrypted_msg);
+  BN_free(signing_msg);
 
   return 0;
 }
