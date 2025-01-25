@@ -49,9 +49,6 @@ int main(void)
   OPENSSL_free(sign_hex_ptr);
   hex_to_string(sign_msg_hex, sign_msg_text);
 
-  printf("Signature message (hex): %s\n", sign_msg_hex);
-  printf("Signature message (text): %s\n", sign_msg_text);
-
   if (strcmp(sign_msg_text, message) == 0)
   {
     printf("Valid signature!\n");
