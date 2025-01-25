@@ -69,10 +69,9 @@ hex value:
 
 The following parameters are used:
 ```
+M = A top secret!
 n = DCBFFE3E51F62E09CE7032E2677A78946A849DC4CDDE3A4D0CB81629242FB1A5
 e = 010001 (this hex value equals to decimal 65537)
-M = A top secret!
-d = 74D806F9F3A62BAE331FFE3F0A68AFE35B3D2E4794148AACBC26AA381CD7D30D
 ```
 
 The code of that task is in [encrypt_message.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/encrypt_message.c).
@@ -103,7 +102,6 @@ python3 -c 'print(bytes.fromhex("4120746f702073656372657421").decode("utf-8"))'
 The following parameters are used:
 ```
 n = DCBFFE3E51F62E09CE7032E2677A78946A849DC4CDDE3A4D0CB81629242FB1A5
-e = 010001 (this hex value equals to decimal 65537)
 C = 8C0F971DF2F3672B28811407E2DABBE1DA0FEBBBDFC7DCB67396567EA1E2493F
 d = 74D806F9F3A62BAE331FFE3F0A68AFE35B3D2E4794148AACBC26AA381CD7D30D
 ```
@@ -124,3 +122,80 @@ Enter the cipher text:    8C0F971DF2F3672B28811407E2DABBE1DA0FEBBBDFC7DCB6739656
 Decrypted message (hex):  50617373776F72642069732064656573
 Decrypted message (text): Password is dees
 ```
+
+### Task 4: Signing a Message
+The public/private keys used in this task are the same as the ones used in Task 2. Please generate a signature
+for the following message (please directly sign this message, instead of signing its hash value):
+
+```
+M1 = "I owe you $2000."
+M2 = "I owe you $3000."
+```
+
+The code of that task is in [sign_message.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/sign_message.c).
+
+To complie the code run the command:
+```
+gcc sign_message.c -lcrypto -o bin/sign_message
+```
+To run the complied code:
+```
+./bin/sign_message
+```
+
+My results:
+```
+[01/25/25]seed@VM:~/.../RSA$ ./bin/sign_message 
+Enter the message: I owe you $2000.
+Signature:  55A4E7F17F04CCFE2766E1EB32ADDBA890BBE92A6FBE2D785ED6E73CCB35E4CB
+[01/25/25]seed@VM:~/.../RSA$ ./bin/sign_message 
+Enter the message: I owe you $3000.
+Signature:  BCC20FB7568E5D48E434C387C06A6025E90D29D848AF9C3EBAC0135D99305822
+```
+
+Observation:
+The two results are completely different so small change in the message will result in completey different output.
+
+### Task 5: Verifying a Signature
+Bob receives a message M = "Launch a missile." from Alice, with her signature S. We know that
+Alice’s public key is (e, n). Please verify whether the signature is indeed Alice’s or not. The public key
+and signature (hexadecimal) are listed in the following:
+```
+M = Launch a missile.
+S = 643D6F34902D9C7EC90CB0B2BCA36C47FA37165C0005CAB026C0542CBDB6802F
+e = 010001 (this hex value equals to decimal 65537)
+n = AE1CD4DC432798D933779FBD46C6E1247F0CF1233595113AA51B450F18116115
+```
+Suppose that the signature above is corrupted, such that the last byte of the signature changes from 2F
+to 3F, i.e, there is only one bit of change.
+```
+S1 = 643D6F34902D9C7EC90CB0B2BCA36C47FA37165C0005CAB026C0542CBDB6802F
+S2 = 643D6F34902D9C7EC90CB0B2BCA36C47FA37165C0005CAB026C0542CBDB6803F
+```
+
+The code of that task is in [verify_message.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/verify_message.c).
+
+To complie the code run the command:
+```
+gcc verify_message.c -lcrypto -o bin/sign_message
+```
+To run the complied code:
+```
+./bin/verify_message
+```
+
+My results:
+```
+[01/25/25]seed@VM:~/.../RSA$ ./bin/verify_message 
+Enter the message: Launch a missile.
+Enter the signature: 643D6F34902D9C7EC90CB0B2BCA36C47FA37165C0005CAB026C0542CBDB6802F
+Valid signature!
+[01/25/25]seed@VM:~/.../RSA$ ./bin/verify_message 
+Enter the message: Launch a missile.
+Enter the signature: 643D6F34902D9C7EC90CB0B2BCA36C47FA37165C0005CAB026C0542CBDB6803F    
+Invaliad signature!
+```
+
+Observation:
+Small change in signature or change in singature can't give you a correct signature that much the message.
+
