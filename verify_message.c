@@ -9,15 +9,15 @@ int main(void)
 {
   // Define required variables.
   
-  BIGNUM *c = BN_new(); // Cipher.
+  BIGNUM *c = BN_new(); // Signature.
   BIGNUM *n = BN_new(); // Group.
-  BIGNUM *d = BN_new(); // Private key.
+  BIGNUM *e = BN_new(); // Public key.
   BIGNUM *sign_msg = BN_new(); // Define the decrypted message.
   
   BN_CTX *ctx = BN_CTX_new(); // Define ctx for calculations.
 
   // Ensure all variables allocated.
-  if (!c || !n || !d || !sign_msg || !ctx) {
+  if (!c || !n || !e || !sign_msg || !ctx) {
       fprintf(stderr, "Error: Failed to allocate BIGNUMs or BN_CTX\n");
       return 1;
   }
@@ -32,14 +32,14 @@ int main(void)
 
   printf("Enter the signature: ");
   fgets(sign, sizeof(sign), stdin);
-  sign[strcspn(sign, "\n")] = '\0';
+  sign[strcspn(sign, "\n")] = '\0'; 
 
   // Assign values.
   BN_hex2bn(&c, sign); 
-  BN_hex2bn(&n, "DCBFFE3E51F62E09CE7032E2677A78946A849DC4CDDE3A4D0CB81629242FB1A5"); 
-  BN_hex2bn(&d, "74D806F9F3A62BAE331FFE3F0A68AFE35B3D2E4794148AACBC26AA381CD7D30D"); 
+  BN_hex2bn(&n, "AE1CD4DC432798D933779FBD46C6E1247F0CF1233595113AA51B450F18116115"); 
+  BN_hex2bn(&e, "010001"); 
 
-  BN_mod_exp(sign_msg, c, d, n, ctx); 
+  BN_mod_exp(sign_msg, c, e, n, ctx); 
 
   char sign_msg_text[256] = {0};
   char sign_msg_hex[256] = {0};
@@ -62,7 +62,7 @@ int main(void)
   BN_CTX_free(ctx);
   BN_free(n);
   BN_free(c);
-  BN_free(d);
+  BN_free(e);
   BN_free(sign_msg);
 
   return 0;
