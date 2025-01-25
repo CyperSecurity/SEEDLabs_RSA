@@ -34,7 +34,7 @@ q = E85CED54AF57E53E092113E62F436F4F
 e = 0D88C3
 ```
 
-The code of that task is in [calc_private_key.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/calc_private_key.c).
+Task code can be found in [calc_private_key.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/calc_private_key.c).
 
 To complie the code run the command:
 ```
@@ -45,7 +45,7 @@ To run the complied code:
 ./bin/calc_private_key
 ```
 
-My results:
+Results:
 ```
 N:           072C8D59E4307CFD226E6FA4263F3FDC5D9676BCCC70118BD0AA1968DBB143D1
 phi N:       072C8D59E4307CFD226E6FA4263F3FDB6D52298BD687C44DEB3A81065A7981A4
@@ -74,7 +74,7 @@ n = DCBFFE3E51F62E09CE7032E2677A78946A849DC4CDDE3A4D0CB81629242FB1A5
 e = 010001 (this hex value equals to decimal 65537)
 ```
 
-The code of that task is in [encrypt_message.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/encrypt_message.c).
+Task code can be found in  [encrypt_message.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/encrypt_message.c).
 
 To complie the code run the command:
 ```
@@ -85,7 +85,7 @@ To run the complied code:
 ./bin/encrypt_message
 ```
 
-My results:
+Results:
 ```
 Enter the message: A top secret!
 Encrypted message: 6FB078DA550B2650832661E14F4F8D2CFAEF475A0DF3A75CACDC5DE5CFC5FADC
@@ -105,7 +105,7 @@ n = DCBFFE3E51F62E09CE7032E2677A78946A849DC4CDDE3A4D0CB81629242FB1A5
 C = 8C0F971DF2F3672B28811407E2DABBE1DA0FEBBBDFC7DCB67396567EA1E2493F
 d = 74D806F9F3A62BAE331FFE3F0A68AFE35B3D2E4794148AACBC26AA381CD7D30D
 ```
-The code of that task is in [decrypt_message.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/decrypt_message.c).
+Task code can be found in  [decrypt_message.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/decrypt_message.c).
 
 To complie the code run the command:
 ```
@@ -116,7 +116,7 @@ To run the complied code:
 ./bin/decrypt_message
 ```
 
-My results:
+Results:
 ```
 Enter the cipher text:    8C0F971DF2F3672B28811407E2DABBE1DA0FEBBBDFC7DCB67396567EA1E2493F
 Decrypted message (hex):  50617373776F72642069732064656573
@@ -132,7 +132,7 @@ M1 = "I owe you $2000."
 M2 = "I owe you $3000."
 ```
 
-The code of that task is in [sign_message.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/sign_message.c).
+Task code can be found in  [sign_message.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/sign_message.c).
 
 To complie the code run the command:
 ```
@@ -143,7 +143,7 @@ To run the complied code:
 ./bin/sign_message
 ```
 
-My results:
+Results:
 ```
 [01/25/25]seed@VM:~/.../RSA$ ./bin/sign_message 
 Enter the message: I owe you $2000.
@@ -173,7 +173,7 @@ S1 = 643D6F34902D9C7EC90CB0B2BCA36C47FA37165C0005CAB026C0542CBDB6802F
 S2 = 643D6F34902D9C7EC90CB0B2BCA36C47FA37165C0005CAB026C0542CBDB6803F
 ```
 
-The code of that task is in [verify_message.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/verify_message.c).
+Task code can be found in  [verify_message.c](https://github.com/CyperSecurity/SEEDLabs_RSA/blob/main/verify_message.c).
 
 To complie the code run the command:
 ```
@@ -184,7 +184,7 @@ To run the complied code:
 ./bin/verify_message
 ```
 
-My results:
+Results:
 ```
 [01/25/25]seed@VM:~/.../RSA$ ./bin/verify_message 
 Enter the message: Launch a missile.
